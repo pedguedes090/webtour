@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+
+# Test screenshots, captures, and audit artifacts
+lab/
+**/lab/
+scratch/
+*.log
+**/*.log
+
+# Archives
+*.zip
+*.tar.gz
+
+# OS metadata
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Environment
+.env
+.env.local

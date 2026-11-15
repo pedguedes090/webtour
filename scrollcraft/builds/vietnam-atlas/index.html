@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vietnam Atlas · Hành trình Xuyên Việt 2025-2026</title>
+  <link rel="icon" href="data:,">
+  <meta name="description" content="Vietnam Atlas: Bản đồ khí hậu 11 điểm đến thuộc 34 đơn vị hành chính 2026, đồng bộ chuyến bay, lưu trú, du thuyền, tour, eSIM và thẻ quà tặng.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&subset=vietnamese,latin&display=swap">
+
+  <link rel="stylesheet" href="scrollcraft.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="va-skip" href="#act-explore" data-i18n="skipLink">Chuyển tới bản đồ &amp; đặt dịch vụ</a>
+
+  <!-- Top scroll progress hairline -->
+  <div data-sc-progress aria-hidden="true"></div>
+
+  <!-- Sunlit light-canvas build: omit SVG feTurbulence .sc-grain overlay to avoid per-frame full-viewport blending -->
+
+  <!-- ======================================================================
+       STICKY CARTOGRAPHIC HEADER (3-Site Switcher + 7 IA Pillars + VI/EN + VNĐ/USD)
+       ====================================================================== -->
+  <header class="va-header is-in-hero" id="site-header">
+    <div class="va-header__inner">
+      <div class="va-header__left">
+        <a class="va-brand" href="index.html" aria-label="Vietnam Atlas">
+          <svg class="va-brand__mark" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">
+            <circle cx="14" cy="14" r="12" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.28"/>
+            <path d="M15.5 4.5 C19.5 7.5, 11.5 11.5, 14.5 15.5 C17.2 19, 13.8 21.8, 11.2 23.8" fill="none" stroke="#096B5C" stroke-width="2.2" stroke-linecap="round"/>
+            <circle cx="15.5" cy="4.5" r="1.8" fill="#102421"/>
+            <circle cx="11.2" cy="23.8" r="2" fill="#096B5C"/>
+          </svg>
+          <span class="va-brand__text">Vietnam Atlas</span>
+        </a>
+
+        <div class="va-site-links" role="navigation" aria-label="Hệ sinh thái 3 trang web">
+          <a class="va-site-link is-current" href="index.html" aria-current="page" data-i18n="siteHome">Khám phá</a>
+          <a class="va-site-link" href="explore.html" id="nav-portal-link" data-i18n="sitePortal">Đặt dịch vụ</a>
+          <a class="va-site-link" href="admin.html" data-i18n="siteAdmin">Quản trị CMS</a>
+        </div>
+      </div>
+
+      <nav class="va-nav" aria-label="7 danh mục dịch vụ chính">
+        <ul class="va-nav__list">
+          <li><button type="button" class="va-nav__link" data-nav-target="act-explore" data-nav-mode="stays">Hotels &amp; Homes</button></li>
+          <li><button type="button" class="va-nav__link" data-nav-target="act-explore" data-nav-mode="map">Map</button></li>
+          <li><button type="button" class="va-nav__link" data-nav-target="act-explore" data-nav-mode="flights">Flights</button></li>
+          <li><button type="button" class="va-nav__link" data-nav-target="act-utility" data-nav-focus="esim">eSIM</button></li>
+          <li><button type="button" class="va-nav__link" data-nav-target="act-explore" data-nav-mode="tours">Tours</button></li>
+          <li><button type="button" class="va-nav__link" data-nav-target="act-utility" data-nav-focus="giftcards">Giftcards</button></li>
+          <li><button type="button" class="va-nav__link" data-nav-target="act-supports">Supports</button></li>
+        </ul>
+      </nav>
+
+      <div class="va-header__actions">
+        <div class="va-toggle-pair" role="group" aria-label="Ngôn ngữ">
+          <button type="button" class="va-toggle-btn is-active" data-lang="vi" aria-pressed="true">VI</button>
+          <button type="button" class="va-toggle-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
+
+        <div class="va-toggle-pair" role="group" aria-label="Tiền tệ">
+          <button type="button" class="va-toggle-btn is-active" data-currency="VND" aria-pressed="true">VNĐ</button>
+          <button type="button" class="va-toggle-btn" data-currency="USD" aria-pressed="false">USD</button>
+        </div>
+
+        <a class="va-dossier-pill" href="#act-dossier" id="header-dossier-badge" aria-label="Hồ sơ hành trình hiện tại">
+          <span class="va-dossier-pill__dot" aria-hidden="true"></span>
+          <span class="va-dossier-pill__label" data-i18n="dossierShort">Hồ sơ</span>
+          <span class="va-dossier-pill__count sc-nums" id="header-dossier-count">0</span>
+        </a>
+
+        <a class="va-btn va-btn--primary va-header__cta" href="#act-dossier" data-i18n="primaryCta">Lập hành trình</a>
+
+        <button type="button" class="va-menu-toggle" id="mobile-menu-toggle" aria-expanded="false" aria-controls="mobile-nav-drawer" aria-label="Mở danh mục">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Compact Mobile Navigation Drawer -->
+    <div class="va-mobile-drawer" id="mobile-nav-drawer" hidden>
+      <div class="va-mobile-drawer__sites">
+        <a class="va-site-link is-current" href="index.html" data-i18n="siteHome">Khám phá</a>
+        <a class="va-site-link" href="explore.html" id="mobile-portal-link" data-i18n="sitePortal">Đặt dịch vụ</a>
+        <a class="va-site-link" href="admin.html" data-i18n="siteAdmin">Quản trị CMS</a>
+      </div>
+      <div class="va-mobile-drawer__grid">
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-explore" data-nav-mode="stays">Hotels &amp; Homes</button>
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-explore" data-nav-mode="map">Map</button>
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-explore" data-nav-mode="flights">Flights</button>
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-utility" data-nav-focus="esim">eSIM</button>
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-explore" data-nav-mode="tours">Tours</button>
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-utility" data-nav-focus="giftcards">Giftcards</button>
+        <button type="button" class="va-mobile-drawer__item" data-nav-target="act-supports">Supports</button>
+        <a class="va-btn va-btn--primary va-mobile-drawer__cta" href="#act-dossier" data-i18n="primaryCta">Lập hành trình</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <!-- ====================================================================
+         ACT 1 · HERO (5-Plane Sunlit Coastal Parallax, pin 2.10vh)
+         ==================================================================== -->
+    <section id="act-hero" data-sc-act="pin" data-sc-span="2.10" data-sc-drift="#FAFBF9" aria-label="Khởi hành bình minh trên vịnh Việt Nam">
+      <div class="sc-stage hero-stage" data-sc-stage>
+        <!-- Desktop 5-plane parallax stack -->
+        <div class="hero-planes hero-planes--desktop" aria-hidden="true">
+          <img class="hero-plane hero-plane--plate" src="assets/gen/hero-plate.webp" width="1920" height="1080" alt="" data-sc-parallax="0.35">
+          <img class="hero-plane hero-plane--mid" src="assets/gen/hero-mid.webp" width="1920" height="1080" alt="" data-sc-parallax="-0.50">
+          <img class="hero-plane hero-plane--subject" src="assets/gen/hero-subject.webp" width="1400" height="1193" alt="" data-sc-parallax="-0.95">
+          <img class="hero-plane hero-plane--fore" src="assets/gen/hero-fore.webp" width="1920" height="1080" alt="" data-sc-parallax="-1.45">
+        </div>
+
+        <!-- Mobile sunlit portrait plane (<860px) -->
+        <div class="hero-planes hero-planes--mobile" aria-hidden="true">
+          <img class="hero-plane hero-plane--mobile" src="assets/gen/hero-mobile.webp" width="1080" height="1920" alt="" data-sc-parallax="0.30">
+        </div>
+
+        <!-- Sunlit atmosphere haze & seamless limestone floor dissolve -->
+        <div class="hero-mist" aria-hidden="true"></div>
+        <div class="hero-floor" aria-hidden="true"></div>
+
+        <!-- Sibling light-mode scrim washing toward #FAFBF9 for deep forest ink -->
+        <div class="sc-scrim sc-scrim--lead hero-scrim" aria-hidden="true"></div>
+
+        <!-- Hero Headline & Subtitle (Greet cue: visible at p=0, exits cleanly before 1.0) -->
+        <div class="sc-copy hero-copy">
+          <h1 class="sc-display sc-display--xl hero-title" data-sc-kinetic="lines" data-sc-cue="0 0.94 0 0.36" data-i18n="heroTitle">
+            Một dải chữ S, trọn nhịp nắng đẹp.
+          </h1>
+          <p class="sc-lede hero-lede" data-sc-cue="0 0.94 0 0.36" data-i18n="heroLede">
+            Bản đồ 11 vùng Việt Nam 2026: đồng bộ mùa nắng, chuyến bay, lưu trú và eSIM.
+          </p>
+        </div>
+
+        <!-- Stationary Compact Expedition Search Launcher (always visible & focusable inside 100svh) -->
+        <div class="hero-dock" aria-label="Tìm kiếm hành trình nhanh">
+          <form class="hero-launcher" id="hero-search-form" action="explore.html" method="get" novalidate>
+            <div class="hero-launcher__top">
+              <div class="va-segmented" role="group" aria-label="Loại chặng bay">
+                <button type="button" class="va-segmented__btn is-active" data-trip-type="round-trip" aria-pressed="true" data-i18n="roundTripOpt">Round-Trip (Khứ hồi)</button>
+                <button type="button" class="va-segmented__btn" data-trip-type="one-way" aria-pressed="false" data-i18n="oneWayOpt">One-way (Một chiều)</button>
+              </div>
+              <div class="hero-launcher__links">
+                <span class="hero-launcher__tip" id="hero-season-pill">T3-T4: Khung vàng khô ráo toàn quốc</span>
+                <a class="va-inline-portal-link" href="explore.html" id="hero-open-portal" data-i18n="openPortalLink">Mở Cổng đặt chỗ →</a>
+              </div>
+            </div>
+
+            <div class="hero-launcher__fields">
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="fieldSelectCity">Select City (Chọn khu vực)</span>
+                <select class="va-input" id="hero-city-select" name="city" aria-label="Chọn khu vực điểm đến"></select>
+              </label>
+
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="fieldDepart">Ngày đi</span>
+                <input class="va-input" id="hero-depart-date" type="date" name="dep" value="2026-03-18" aria-label="Chọn ngày khởi hành">
+              </label>
+
+              <label class="va-field" id="hero-return-wrap">
+                <span class="va-field__label" data-i18n="fieldReturn">Ngày về</span>
+                <input class="va-input" id="hero-return-date" type="date" name="ret" value="2026-03-22" aria-label="Chọn ngày về">
+              </label>
+
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="fieldBudget">Price / Budget</span>
+                <select class="va-input" id="hero-budget-select" name="budget" aria-label="Chọn mức ngân sách">
+                  <option value="all">Tất cả phân khúc</option>
+                  <option value="budget">Budget (&lt; 800k)</option>
+                  <option value="mid">Mid-range (800k - 2,5M)</option>
+                  <option value="luxury">Luxury (2,5M+)</option>
+                </select>
+              </label>
+
+              <div class="hero-launcher__submit">
+                <button type="submit" class="va-btn va-btn--primary hero-launcher__cta" data-i18n="primaryCta">Lập hành trình</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 2 · LIVE VIETNAM MAP & BOOKING WORKBENCH (flow)
+         ==================================================================== -->
+    <section id="act-explore" class="va-explore" data-sc-act="flow" data-sc-drift="#F3F7F5" aria-labelledby="explore-heading">
+      <div class="sc-wrap">
+        <div class="va-explore__head" data-sc-in data-sc-stagger="60">
+          <div class="va-explore__title-group">
+            <h2 class="sc-display sc-display--lg" id="explore-heading" data-i18n="exploreTitle">Bản đồ 11 vùng đất &amp; Đặt dịch vụ</h2>
+            <p class="sc-body" data-i18n="exploreSubtitle">Cập nhật cấu trúc 34 đơn vị hành chính 2026, đồng bộ sân bay cửa ngõ, mùa nắng mưa và giá vé thời điểm.</p>
+          </div>
+
+          <div class="va-explore__head-right">
+            <!-- Primary Service Mode Switcher -->
+            <div class="va-mode-tabs" role="tablist" aria-label="Chế độ dịch vụ du lịch">
+              <button type="button" role="tab" class="va-mode-tab is-active" data-mode="stays" aria-selected="true">Hotels &amp; Homes</button>
+              <button type="button" role="tab" class="va-mode-tab" data-mode="map" aria-selected="false">Map</button>
+              <button type="button" role="tab" class="va-mode-tab" data-mode="flights" aria-selected="false">Flights</button>
+              <button type="button" role="tab" class="va-mode-tab" data-mode="tours" aria-selected="false">Tours</button>
+            </div>
+            <a class="va-btn va-btn--ghost va-portal-handoff" href="explore.html" id="wb-portal-handoff" data-i18n="wbOpenFullPortal">Xem toàn bộ trên Portal</a>
+          </div>
+        </div>
+
+        <!-- Unified Synchronized Filter Matrix -->
+        <div class="va-filter-bar" id="workbench-filters" data-sc-in>
+          <div class="va-filter-row">
+            <div class="va-filter-cell">
+              <span class="va-field__label" data-i18n="fieldTripType">Hành trình bay</span>
+              <div class="va-segmented" role="group" aria-label="Chọn loại hành trình bay">
+                <button type="button" class="va-segmented__btn is-active" data-trip-type="round-trip" aria-pressed="true" data-i18n="roundTripOpt">Round-Trip (Khứ hồi)</button>
+                <button type="button" class="va-segmented__btn" data-trip-type="one-way" aria-pressed="false" data-i18n="oneWayOpt">One-way (Một chiều)</button>
+              </div>
+            </div>
+
+            <label class="va-filter-cell">
+              <span class="va-field__label" data-i18n="fieldSelectCity">Select City (Chọn khu vực)</span>
+              <select class="va-input" id="wb-city-select" aria-label="Lọc theo khu vực 11 điểm đến"></select>
+            </label>
+
+            <label class="va-filter-cell">
+              <span class="va-field__label" data-i18n="fieldDepartFull">Ngày khởi hành</span>
+              <input class="va-input" id="wb-depart-date" type="date" value="2026-03-18" aria-label="Ngày khởi hành trên bảng lọc">
+            </label>
+
+            <label class="va-filter-cell" id="wb-return-wrap">
+              <span class="va-field__label" data-i18n="fieldReturnFull">Ngày về</span>
+              <input class="va-input" id="wb-return-date" type="date" value="2026-03-22" aria-label="Ngày trở về trên bảng lọc">
+            </label>
+          </div>
+
+          <div class="va-filter-row va-filter-row--secondary">
+            <!-- Budget Presets + Exact Range Slider -->
+            <div class="va-budget-control">
+              <div class="va-budget-control__head">
+                <span class="va-field__label" data-i18n="fieldBudget">Price / Budget</span>
+                <span class="va-budget-control__val sc-nums" id="wb-budget-readout">Tất cả mức giá</span>
+              </div>
+              <div class="va-budget-presets" role="group" aria-label="Mức ngân sách nhanh">
+                <button type="button" class="va-chip is-active" data-budget="all" data-i18n="budgetAll">Tất cả</button>
+                <button type="button" class="va-chip" data-budget="budget">Budget &lt;800k</button>
+                <button type="button" class="va-chip" data-budget="mid">Mid-range 800k-2,5M</button>
+                <button type="button" class="va-chip" data-budget="luxury">Luxury 2,5M+</button>
+              </div>
+              <label class="va-slider-wrap">
+                <span class="va-sr-only">Giới hạn trần ngân sách tối đa</span>
+                <input type="range" id="wb-budget-slider" min="300000" max="10000000" step="100000" value="10000000">
+              </label>
+            </div>
+
+            <!-- Live Seasonal Climate & Storm Warning Banner -->
+            <div class="va-climate-banner" id="climate-banner" role="status" aria-live="polite"></div>
+          </div>
+
+          <!-- Sub-categories when Hotels & Homes is active -->
+          <div class="va-subtabs" id="stays-subtabs" role="group" aria-label="Phân loại lưu trú">
+            <button type="button" class="va-chip is-active" data-stay-sub="all" data-i18n="subAllStays">Tất cả lưu trú</button>
+            <button type="button" class="va-chip" data-stay-sub="Hotels">Hotels</button>
+            <button type="button" class="va-chip" data-stay-sub="Homes & Villas">Homes &amp; Villas</button>
+            <button type="button" class="va-chip" data-stay-sub="Cruises">Cruises</button>
+          </div>
+        </div>
+
+        <!-- Split Cartographic Workspace: Interactive S-Curve SVG Map + Hub Inspector & Filtered Results -->
+        <div class="va-atlas-grid" id="atlas-workspace">
+          <!-- Left Column: Real Lat/Lng S-Curve SVG Map + Selected Hub Dossier -->
+          <aside class="va-map-panel" aria-label="Bản đồ tương tác 11 điểm đến Việt Nam">
+            <div class="va-map-panel__top">
+              <div>
+                <h3 class="va-panel-title" id="map-hub-title">Toàn tuyến 11 điểm đến</h3>
+                <p class="va-panel-meta" data-i18n="mapGeoMeta">Sa Pa đến Phú Quốc · 22.34°N - 10.22°N</p>
+              </div>
+              <button type="button" class="va-chip" id="map-reset-btn" data-i18n="mapResetBtn">Xem tất cả 11 điểm</button>
+            </div>
+
+            <div class="va-svg-map-wrap">
+              <svg id="vietnam-scurve-svg" viewBox="0 0 440 760" width="440" height="760" role="img" aria-label="Bản đồ chữ S Việt Nam với 11 điểm đến và 9 cảng hàng không">
+                <defs>
+                  <linearGradient id="sea-grid-fade" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#E4EFEA" stop-opacity="0.72"/>
+                    <stop offset="100%" stop-color="#EDF3F0" stop-opacity="0.45"/>
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width="440" height="760" fill="url(#sea-grid-fade)"/>
+                <g id="map-graticule"></g>
+                <g id="map-landmass"></g>
+                <g id="map-flight-arcs"></g>
+                <g id="map-archipelagos"></g>
+                <g id="map-airports"></g>
+                <g id="map-city-pins"></g>
+              </svg>
+            </div>
+
+            <!-- Selected Destination Detail Card -->
+            <div class="va-hub-detail" id="map-hub-detail"></div>
+          </aside>
+
+          <!-- Right Column: Dynamic Filtered Cards (Stays / Tours / Flights / Hub Directory) -->
+          <div class="va-results-pane" id="workbench-results" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 3 · COASTAL-TO-HIGHLAND SCENIC TRIPTYCH BAND (pin 1.70vh, drift #EEF3F0)
+         ==================================================================== -->
+    <!-- ====================================================================
+         ACT 3 · COASTAL-TO-HIGHLAND SCENIC TRIPTYCH BAND (pin 2.65vh, parallax sky/valley ground + staggered elevation cards)
+         ==================================================================== -->
+    <section id="act-silence" data-sc-act="pin" data-sc-span="2.65" data-sc-drift="#EAF2EE" aria-label="Cầu nối cảnh quan biển đảo và núi rừng Việt Nam">
+      <div class="sc-stage silence-stage" data-sc-stage>
+        <!-- Full-bleed atmospheric landscape ground + sunlit ivory wash -->
+        <img class="silence-backdrop" src="assets/gen/hoabinh-dawn.webp" width="1600" height="900" alt="" data-sc-parallax="-0.65" aria-hidden="true">
+        <div class="silence-veil" aria-hidden="true"></div>
+        <svg class="silence-contours" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M-40 670 Q 340 590 720 650 T 1480 610" />
+          <path d="M-40 735 Q 380 665 760 720 T 1480 685" />
+          <path d="M-40 800 Q 420 755 820 795 T 1480 765" />
+        </svg>
+
+        <div class="sc-wrap silence-shell">
+          <div class="sc-copy sc-copy--center silence-copy" data-sc-cue="0 0.94 0 0.18">
+            <span class="sc-mono silence-eyebrow" data-i18n="silenceEyebrow">ACT 03 · 0 M BIỂN ĐÔNG → 1.487 M ĐỈNH BÀ NÀ</span>
+            <div class="silence-horizon" aria-hidden="true"></div>
+            <p class="sc-display sc-display--md silence-line" data-i18n="silenceLine">Biển lặng trước khi mây mở lối lên ngàn.</p>
+            <p class="sc-body silence-fact" data-i18n="silenceFact">0 m Vịnh Hạ Long -> 1.150 m Đèo Thung Khe · Cầu nối 3 mùa nắng đẹp Bắc - Trung - Nam</p>
+            <div class="silence-actions">
+              <a class="va-btn va-btn--primary" href="#act-rail" data-i18n="silenceCta">Khám phá Tour chọn lọc →</a>
+            </div>
+          </div>
+
+          <div class="silence-triptych">
+            <a class="silence-card" href="explore.html?city=halong" data-sc-cue="0 0.96 0 0.16">
+              <figure class="silence-frame">
+                <img src="assets/photos/halong.webp" width="1600" height="1066" alt="Vịnh Hạ Long mặt biển êm trong nắng sớm">
+              </figure>
+              <div class="silence-card__cap">
+                <div class="silence-card__top">
+                  <strong data-i18n="silenceCard1Title">Vịnh Hạ Long · 0 m</strong>
+                  <span class="sc-mono silence-card__tag" data-i18n="silenceCard1Tag">T3-5 &amp; T9-11</span>
+                </div>
+                <p data-i18n="silenceCard1Desc">Mặt vịnh ngọc lặng sóng · Du thuyền ngủ đêm &amp; chèo kayak hang Luồn</p>
+              </div>
+            </a>
+
+            <a class="silence-card" href="explore.html?city=hoabinh" data-sc-cue="0.06 0.97 0.22 0.16">
+              <figure class="silence-frame">
+                <img src="assets/photos/maichau-homestay.webp" width="1600" height="1066" alt="Thung lũng Mai Châu xanh mướt dưới dãy núi Tây Bắc">
+              </figure>
+              <div class="silence-card__cap">
+                <div class="silence-card__top">
+                  <strong data-i18n="silenceCard2Title">Mai Châu - Hòa Bình · 550 m</strong>
+                  <span class="sc-mono silence-card__tag" data-i18n="silenceCard2Tag">Đèo Thung Khe</span>
+                </div>
+                <p data-i18n="silenceCard2Desc">Thung lũng lúa xanh &amp; nhà sàn Bản Lác · Tắm khoáng nóng Kim Bôi</p>
+              </div>
+            </a>
+
+            <a class="silence-card" href="explore.html?city=danang" data-sc-cue="0.15 0.98 0.22 0.16">
+              <figure class="silence-frame">
+                <img src="assets/photos/danang.webp" width="1600" height="1066" alt="Bờ biển Đà Nẵng nắng ráo nối nhịp miền Trung">
+              </figure>
+              <div class="silence-card__cap">
+                <div class="silence-card__top">
+                  <strong data-i18n="silenceCard3Title">Đà Nẵng - Bà Nà · 1.487 m</strong>
+                  <span class="sc-mono silence-card__tag" data-i18n="silenceCard3Tag">Mùa khô T2-8</span>
+                </div>
+                <p data-i18n="silenceCard3Desc">Biển Mỹ Khê nối đỉnh Cầu Vàng · Cửa ngõ di sản Hội An - Huế</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 4 · THE PEAK: MAI CHÂU 2N1Đ BOOKABLE SHOWCASE (scrub 3.00vh, dwell 0.18)
+         ==================================================================== -->
+    <section id="act-peak" data-sc-act="scrub" data-sc-span="3.00" data-sc-dwell="0.18" data-sc-drift="#F6F9F7" aria-label="Tour tuyến Bắc 2N1Đ từ vịnh ngọc lên thung lũng mây Mai Châu">
+      <div class="sc-stage peak-stage" data-sc-stage>
+        <img class="sc-stage__poster" src="assets/clips/peak-poster.webp" width="1600" height="914" alt="Vịnh đá vôi Hạ Long chuyển tiếp vào núi rừng Tây Bắc trong ánh bình minh">
+        <video data-sc-scrub data-sc-lerp="0.12" data-sc-src="assets/clips/peak.mp4" data-sc-src-mobile="assets/clips/peak-m.mp4" muted playsinline aria-label="Thước phim lướt dọc vịnh đá vôi lên thung lũng núi mờ sương"></video>
+
+        <!-- Sibling light-mode scrim washing toward #FAFBF9 to guarantee deep-ink contrast -->
+        <div class="sc-scrim sc-scrim--lead peak-scrim" aria-hidden="true"></div>
+
+        <div class="peak-layout">
+          <div class="peak-copy" data-sc-cue="0 0.96 0 0.22">
+            <h2 class="sc-display sc-display--lg peak-title" data-sc-kinetic="lines" data-i18n="peakTitle">
+              Từ vịnh ngọc lên thung lũng mây Mai Châu
+            </h2>
+            <p class="peak-price-line sc-nums" data-i18n="peakPriceLine">Tour tuyến Bắc 2N1Đ · Từ 1.450.000 VNĐ/khách · Đón Hà Nội</p>
+            <p class="sc-body peak-desc" data-i18n="peakDesc">
+              Vượt đèo Thung Khe 135 km từ Hà Nội để chạm mặt hồ sông Đà ở Thung Nai, tắm khoáng nóng Kim Bôi và nghỉ đêm nhà sàn Bản Lác.
+            </p>
+            <div class="peak-actions">
+              <button type="button" class="va-btn va-btn--primary peak-action" id="peak-add-tour-btn" data-add-tour-flagship="maichau" data-i18n="peakAddTour">+ Thêm Tour Mai Châu 2N1Đ</button>
+              <a class="va-btn va-btn--ghost" href="#act-rail" data-i18n="peakBrowseTours">Xem bộ sưu tập Tour ↓</a>
+            </div>
+          </div>
+
+          <figure class="peak-inset" data-sc-cue="0 0.96 0 0.22">
+            <img src="assets/gen/hoabinh-dawn.webp" width="1600" height="900" alt="Nhà sàn người Thái bên hồ Hòa Bình và ruộng xanh trong sương sớm Mai Châu">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 5 · FEATURED BOOKABLE TOURS RAIL (pan 3.80vh)
+         ==================================================================== -->
+    <section id="act-rail" data-sc-act="pan" data-sc-span="3.80" data-sc-drift="#EDF3F0" aria-labelledby="rail-heading">
+      <div class="sc-stage rail-stage" data-sc-stage>
+        <div class="va-rail" data-sc-pan="0.03" id="regional-rail">
+          <!-- First item exempt from stagger arrival so opening is grounded -->
+          <div class="va-rail__slot va-rail__slot--lead">
+            <div class="va-rail-lead">
+              <h2 class="sc-display sc-display--lg" id="rail-heading" data-i18n="railTitle">Tour chọn lọc theo mùa nắng</h2>
+              <p class="sc-body" data-i18n="railDesc">Chọn vùng bên dưới hoặc lướt ngang 12 tuyến Bắc - Trung - Nam để thêm trực tiếp vào Hồ sơ chuyến đi.</p>
+              <div class="va-rail-filters" id="rail-tour-filters" role="group" aria-label="Lọc Tour chọn lọc theo vùng">
+                <button type="button" class="va-chip is-active" data-rail-region="all" aria-pressed="true" data-i18n="filterAll">Tất cả</button>
+                <button type="button" class="va-chip" data-rail-region="danang" aria-pressed="false">Đà Nẵng</button>
+                <button type="button" class="va-chip" data-rail-region="hoabinh" aria-pressed="false">Hòa Bình</button>
+                <button type="button" class="va-chip" data-rail-region="nhatrang" aria-pressed="false">Nha Trang</button>
+                <button type="button" class="va-chip" data-rail-region="phuquoc" aria-pressed="false">Phú Quốc</button>
+                <button type="button" class="va-chip" data-rail-region="halong" aria-pressed="false">Hạ Long</button>
+                <button type="button" class="va-chip" data-rail-region="other" aria-pressed="false" data-i18n="filterOther">Vùng khác</button>
+              </div>
+              <div class="va-rail-lead__actions">
+                <a class="va-btn va-btn--primary" href="explore.html?mode=tours" id="rail-portal-btn" data-i18n="railPortalBtn">Mở đủ 23 Tour trên Portal →</a>
+              </div>
+            </div>
+          </div>
+          <!-- Dynamic bookable tour cards injected cleanly from store in app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 6 · eSIM & GIFTCARDS STUDIO (flow + reveal left & iris)
+         ==================================================================== -->
+    <section id="act-utility" class="va-utility" data-sc-act="flow" data-sc-drift="#FAFBF9" aria-labelledby="utility-heading">
+      <div class="sc-wrap">
+        <div class="va-utility__header" data-sc-in data-sc-stagger="60">
+          <h2 class="sc-display sc-display--lg" id="utility-heading" data-i18n="utilityTitle">eSIM phủ sóng 5G &amp; Thẻ quà tặng điện tử</h2>
+          <p class="sc-body" data-i18n="utilityDesc">Cài đặt dữ liệu di động trước giờ bay theo tuyến vùng núi hay biển đảo, hoặc gửi tặng E-Giftcard linh hoạt từ 500.000 VNĐ.</p>
+        </div>
+
+        <!-- Part A: eSIM Advisor (standalone 4:3 card with ~1.0s auto-reveal on scroll) -->
+        <div class="va-studio-row" id="utility-esim">
+          <div class="va-studio-visual">
+            <figure class="va-studio-media" data-auto-reveal>
+              <img src="assets/gen/esim-still.webp" width="1600" height="1200" alt="Điện thoại bật kết nối eSIM bản đồ địa hình trên bàn đá sáng cạnh hộ chiếu và cà phê">
+            </figure>
+            <div class="va-studio-visual__meta">
+              <div class="va-studio-visual__chips">
+                <span class="va-mini-pill">Viettel 5G</span>
+                <span class="va-mini-pill">VNPT / MobiFone</span>
+                <span class="va-mini-pill" data-i18n="esimMetaQR">QR &lt; 2 phút</span>
+              </div>
+              <p class="va-studio-visual__note" data-i18n="esimVisualNote">Phủ sóng liền mạch từ vùng cao Sa Pa - Đèo Thung Khe ra tới vịnh Hạ Long, Đà Nẵng và Phú Quốc qua 34 ĐVHC.</p>
+            </div>
+          </div>
+
+          <div class="va-studio-panel" data-sc-in>
+            <div class="va-studio-panel__head">
+              <div>
+                <h3 class="sc-display sc-display--md" data-i18n="esimTitle">eSIM Du lịch Việt Nam</h3>
+                <p class="sc-body" id="esim-advisor-note" data-i18n="esimSubtitle">Gợi ý tự động theo điểm đến đang chọn trên bản đồ.</p>
+              </div>
+            </div>
+
+            <div class="va-esim-controls">
+              <div class="va-segmented" role="group" aria-label="Thời hạn eSIM">
+                <button type="button" class="va-segmented__btn is-active" data-esim-days="all" data-i18n="budgetAll">Tất cả</button>
+                <button type="button" class="va-segmented__btn" data-esim-days="7" data-i18n="days7">7 ngày</button>
+                <button type="button" class="va-segmented__btn" data-esim-days="15" data-i18n="days15">15 ngày</button>
+                <button type="button" class="va-segmented__btn" data-esim-days="30" data-i18n="days30">30 ngày</button>
+              </div>
+
+              <label class="va-toggle-check">
+                <input type="checkbox" id="esim-intl-toggle">
+                <span data-i18n="esimIntlLabel">Khách quốc tế (ưu tiên +84 hoặc không cần eKYC sân bay)</span>
+              </label>
+            </div>
+
+            <div class="va-esim-recommendation" id="esim-recommendation"></div>
+            <div class="va-esim-list" id="esim-list"></div>
+          </div>
+        </div>
+
+        <!-- Part B: Giftcards Configurator (data-sc-reveal="iris") -->
+        <div class="va-studio-row va-studio-row--reverse" id="utility-giftcards">
+          <div class="va-studio-panel" data-sc-in>
+            <h3 class="sc-display sc-display--md" data-i18n="giftTitle">Thẻ quà tặng E-Giftcard</h3>
+            <p class="sc-body" data-i18n="giftSubtitle">Quy đổi cho Hotels &amp; Homes, Tours, eSIM và Flights trên toàn quốc, trừ dần số dư trong 12 đến 24 tháng.</p>
+
+            <div class="va-gift-form">
+              <div class="va-gift-group">
+                <span class="va-field__label" data-i18n="giftDenomLabel">Mệnh giá</span>
+                <div class="va-chip-grid" id="gift-denom-group" role="group" aria-label="Chọn mệnh giá thẻ quà tặng"></div>
+              </div>
+
+              <div class="va-gift-group">
+                <span class="va-field__label" data-i18n="giftThemeLabel">Chủ đề thiết kế</span>
+                <div class="va-chip-grid" id="gift-theme-group" role="group" aria-label="Chọn chủ đề vùng miền"></div>
+              </div>
+
+              <div class="va-gift-inputs">
+                <label class="va-field">
+                  <span class="va-field__label" data-i18n="giftRecipientLabel">Tên người nhận</span>
+                  <input type="text" class="va-input" id="gift-recipient" placeholder="Minh Anh" maxlength="60">
+                </label>
+                <label class="va-field">
+                  <span class="va-field__label" data-i18n="giftMsgLabel">Lời nhắn gửi</span>
+                  <input type="text" class="va-input" id="gift-message" placeholder="Chúc chuyến đi nắng đẹp dọc chữ S" maxlength="140">
+                </label>
+              </div>
+
+              <!-- Live Giftcard Preview -->
+              <div class="va-gift-preview" id="gift-preview" aria-live="polite"></div>
+
+              <div class="va-gift-actions">
+                <button type="button" class="va-btn va-btn--primary" id="add-giftcard-btn" data-i18n="addGiftBtn">Thêm thẻ quà tặng</button>
+                <a class="va-btn va-btn--ghost" href="explore.html?mode=giftcards" data-i18n="openGiftPortal">Cấu hình thêm tại Portal</a>
+              </div>
+
+              <details class="va-terms-details">
+                <summary data-i18n="giftTermsSummary">Điều khoản minh bạch: Hạn dùng, ngày cao điểm &amp; hoàn tiền bão Hạ Long</summary>
+                <ul class="va-terms-list" id="gift-terms-list"></ul>
+              </details>
+            </div>
+          </div>
+
+          <div class="va-studio-visual va-studio-visual--gift">
+            <figure class="va-studio-media" data-auto-reveal>
+              <img src="assets/gen/giftcard-still.webp" width="1600" height="1200" alt="Thẻ quà tặng du lịch Vietnam Atlas chế tác màu ngà và ngọc bích dưới nắng tự nhiên">
+            </figure>
+            <div class="va-studio-visual__meta">
+              <div class="va-studio-visual__chips">
+                <span class="va-mini-pill" data-i18n="giftMetaTerm">Hạn 12-24 tháng</span>
+                <span class="va-mini-pill" data-i18n="giftMetaBalance">Trừ dần số dư</span>
+                <span class="va-mini-pill" data-i18n="giftMetaScope">Hotels · Flights · Tours</span>
+              </div>
+              <p class="va-studio-visual__note" data-i18n="giftVisualNote">Thẻ điện tử gửi qua email kèm mã quy đổi đa dịch vụ và hoàn giữ giá trị nếu hoãn tàu vì thời tiết.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 7 · GROUND-TRUTH PROTOCOLS & SUPPORTS (flow + auto counters)
+         ==================================================================== -->
+    <section id="act-supports" class="va-supports" data-sc-act="flow" data-sc-drift="#F2F6F4" aria-labelledby="supports-heading">
+      <div class="sc-wrap">
+        <div class="supports-ground__frame supports-ground__frame--flow">
+          <div class="supports-ground__rule" aria-hidden="true"></div>
+          <svg class="supports-ground__grid" viewBox="0 0 1200 720" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="0" y1="180" x2="1200" y2="180" />
+            <line x1="0" y1="360" x2="1200" y2="360" />
+            <line x1="0" y1="540" x2="1200" y2="540" />
+            <line x1="300" y1="0" x2="300" y2="720" />
+            <line x1="600" y1="0" x2="600" y2="720" />
+            <line x1="900" y1="0" x2="900" y2="720" />
+            <circle cx="965" cy="360" r="88" />
+            <circle cx="965" cy="360" r="146" />
+            <path d="M1010 54 C935 168 1055 296 965 446 C900 554 985 628 928 684" />
+          </svg>
+
+          <div class="supports-panel--flow" data-sc-in>
+            <h2 class="sc-display sc-display--lg" id="supports-heading" data-i18n="supportsTitle1">Số liệu thực, không ước lượng</h2>
+
+            <div class="va-metrics-row">
+              <article class="va-metric-block">
+                <div class="va-metric-num"><span class="sc-nums" data-auto-count="34">0</span></div>
+                <p class="va-metric-cap" data-i18n="metric34">Đơn vị hành chính cấp tỉnh Việt Nam 2026 (28 tỉnh và 6 thành phố trực thuộc Trung ương).</p>
+              </article>
+
+              <article class="va-metric-block">
+                <div class="va-metric-num"><span class="sc-nums" data-auto-count="40">0</span><span class="va-metric-unit" data-i18n="unitMin"> phút</span></div>
+                <p class="va-metric-cap" data-i18n="metric40">Mốc đóng quầy làm thủ tục bay nội địa trước giờ khởi hành (mở trước 2h, đóng cửa tàu bay trước 15 phút).</p>
+              </article>
+
+              <article class="va-metric-block">
+                <div class="va-metric-num"><span class="sc-nums" data-auto-count="100">0</span><span class="va-metric-unit">%</span></div>
+                <p class="va-metric-cap" data-i18n="metric100">Hoàn tiền hoặc dời ngày miễn phí khi Cảng vụ Quảng Ninh cấm tàu trước giờ khởi hành từ Hà Nội.</p>
+              </article>
+            </div>
+
+            <div class="va-rule-strip" id="aviation-checklist"></div>
+          </div>
+
+          <div class="supports-panel--flow supports-panel--second" data-sc-in>
+            <h2 class="sc-display sc-display--md" data-i18n="supportsTitle2">Đầu số 112-115 &amp; Chính sách thời tiết biển</h2>
+
+            <div class="va-emergency-bar" id="emergency-bar" aria-label="Đầu số khẩn cấp quốc gia Việt Nam"></div>
+            <p class="va-emergency-note" id="emergency-lang-note"></p>
+
+            <div class="va-policy-grid" id="weather-policies-grid"></div>
+          </div>
+
+          <div class="supports-ground__footer">
+            <span class="sc-mono" data-i18n="supportsGroundTag">ACT 07 · QUY CHUẨN THỰC ĐỊA &amp; CỨU HỘ</span>
+            <span class="sc-mono supports-ground__meta">112 · 113 · 114 · 115 · 34 ĐVHC 2026</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         ACT 8 · RESOLVED CLOSE: WORKING TRIP DOSSIER & COLOPHON (flow)
+         ==================================================================== -->
+    <section id="act-dossier" class="va-dossier" data-sc-act="flow" data-sc-drift="#FAFBF9" aria-labelledby="dossier-heading">
+      <div class="sc-wrap">
+        <div class="va-dossier__header" data-sc-in data-sc-stagger="60">
+          <h2 class="sc-display sc-display--lg" id="dossier-heading" data-i18n="dossierTitle">Hồ sơ chuyến đi của bạn</h2>
+          <p class="sc-body" data-i18n="dossierDesc">Mọi chặng bay, lưu trú, tour, eSIM và thẻ quà tặng được tổng hợp trực tiếp vào VietnamAtlasStore, liên thông với Đặt dịch vụ (explore.html) và Quản trị CMS (admin.html).</p>
+        </div>
+
+        <div class="va-dossier__grid" data-sc-in>
+          <!-- Left: Itinerary Items & Preset Quick-Fill -->
+          <div class="va-dossier-items-card">
+            <div class="va-dossier-items-card__head">
+              <h3><span data-i18n="dossierItemsHeading">Danh mục đã chọn</span> (<span class="sc-nums" id="dossier-item-count">0</span>)</h3>
+              <div class="va-dossier-presets">
+                <button type="button" class="va-chip" id="preset-golden-btn" data-i18n="presetGolden">Điền mẫu Mùa Vàng T3-T4</button>
+                <button type="button" class="va-chip" id="preset-north-btn" data-i18n="presetNorth">Điền mẫu Tây Bắc &amp; Hạ Long</button>
+                <button type="button" class="va-chip va-chip--muted" id="clear-dossier-btn" data-i18n="clearBtn">Xóa trống</button>
+              </div>
+            </div>
+
+            <div id="dossier-items-list" class="va-dossier-list"></div>
+
+            <!-- Weather & Operational Audit across chosen stops -->
+            <div class="va-dossier-audit" id="dossier-audit"></div>
+          </div>
+
+          <!-- Right: Computed Totals, Validation Form & Exports -->
+          <div class="va-dossier-summary-card">
+            <div class="va-dossier-totals">
+              <div class="va-total-row">
+                <span data-i18n="totalVNDLabel">Tổng ước tính (VNĐ)</span>
+                <strong class="sc-nums va-total-vnd" id="dossier-total-vnd">0 VNĐ</strong>
+              </div>
+              <div class="va-total-row va-total-row--sub">
+                <span data-i18n="totalUSDLabel">Quy đổi tham khảo (1 USD = 25.000 VNĐ)</span>
+                <span class="sc-nums" id="dossier-total-usd">$0.00 USD</span>
+              </div>
+              <div class="va-total-row va-total-row--sub">
+                <span data-i18n="datesLabel">Khung ngày dự kiến</span>
+                <span class="sc-nums" id="dossier-dates-summary">2026-03-18 - 2026-03-22</span>
+              </div>
+            </div>
+
+            <!-- method="post" prevents personal email/note GET query leak if JS is off -->
+            <form class="va-dossier-form" id="dossier-form" action="#act-dossier" method="post" novalidate>
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="formName">Họ tên người lập hành trình</span>
+                <input type="text" class="va-input" id="traveler-name" name="travelerName" required placeholder="Nguyễn Minh Quân" autocomplete="name">
+              </label>
+
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="formEmail">Email liên hệ</span>
+                <input type="email" class="va-input" id="traveler-email" name="travelerEmail" required placeholder="quan@example.vn" autocomplete="email">
+              </label>
+
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="formPhone">Số điện thoại / WhatsApp</span>
+                <input type="tel" class="va-input" id="traveler-phone" name="travelerPhone" placeholder="0904 318 220" autocomplete="tel">
+              </label>
+
+              <label class="va-field">
+                <span class="va-field__label" data-i18n="formNote">Ghi chú đoàn / Trẻ em hoặc người cao tuổi</span>
+                <textarea class="va-input va-textarea" id="traveler-note" name="travelerNote" rows="2" placeholder="Ví dụ: Có người cao tuổi trên 60t đi Vịnh Hạ Long cần ưu đãi vé..."></textarea>
+              </label>
+
+              <div class="va-form-feedback" id="dossier-form-feedback" role="status" aria-live="polite"></div>
+
+              <div class="va-dossier-actions">
+                <button type="submit" class="va-btn va-btn--primary" id="dossier-save-btn" data-i18n="primaryCta">Lập hành trình</button>
+                <button type="button" class="va-btn va-btn--ghost" id="dossier-export-json" data-i18n="exportJson">Tải JSON lịch trình</button>
+                <button type="button" class="va-btn va-btn--ghost" id="dossier-print-btn" data-i18n="printBrief">In hồ sơ</button>
+              </div>
+            </form>
+
+            <div class="va-cross-links">
+              <a href="explore.html" class="va-inline-portal-link" id="dossier-portal-link" data-i18n="gotoPortalFull">Mở đầy đủ trên Đặt dịch vụ (explore.html) →</a>
+              <a href="admin.html" class="va-inline-portal-link" data-i18n="gotoAdminCMS">Kiểm tra đơn trong Quản trị CMS (admin.html) →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grounded Colophon inside final stage -->
+        <footer class="va-colophon">
+          <div class="va-colophon__brand">
+            <span class="va-brand__text">Vietnam Atlas</span>
+            <p class="va-colophon__note" data-i18n="colophonNote">Hệ sinh thái du lịch Việt Nam 2025-2026 (34 đơn vị hành chính). Giao diện trình diễn và quản trị dữ liệu đồng bộ qua localStorage &amp; BroadcastChannel (chế độ mô phỏng, không kết nối cổng thanh toán trực tiếp).</p>
+          </div>
+          <div class="va-colophon__links">
+            <a href="#act-hero" data-i18n="footerTop">Đỉnh trang</a>
+            <a href="explore.html" data-i18n="sitePortal">Đặt dịch vụ</a>
+            <a href="admin.html" data-i18n="siteAdmin">Quản trị CMS</a>
+            <a href="#act-supports">Supports 112-115</a>
+          </div>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================================
+       SIGNATURE MOVE: Persistent S-Curve Vietnam Route Ledger
+       ====================================================================== -->
+  <aside class="va-ledger" id="route-ledger" aria-label="Sổ lộ trình dọc chữ S">
+    <button type="button" class="va-ledger__toggle" id="ledger-toggle-btn" aria-expanded="false" aria-controls="ledger-drawer">
+      <svg class="va-ledger__spine" viewBox="0 0 28 48" width="20" height="34" aria-hidden="true">
+        <path class="va-ledger__track" d="M16 3 C22 10, 8 18, 17 26 C24 33, 14 40, 10 45" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.25"/>
+        <path class="va-ledger__progress" id="ledger-progress-path" d="M16 3 C22 10, 8 18, 17 26 C24 33, 14 40, 10 45" fill="none" stroke="#096B5C" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+      <span class="va-ledger__meta">
+        <strong class="va-ledger__city" id="ledger-active-city">11 vùng Việt Nam</strong>
+        <span class="va-ledger__stats sc-nums" id="ledger-summary-line">0 mục · 0 VNĐ</span>
+      </span>
+    </button>
+
+    <div class="va-ledger__drawer" id="ledger-drawer" hidden>
+      <div class="va-ledger__drawer-head">
+        <span class="sc-label">S-Curve Route Ledger</span>
+        <button type="button" class="va-chip" id="ledger-close-btn" data-i18n="collapseBtn">Thu gọn</button>
+      </div>
+      <div class="va-ledger__body" id="ledger-drawer-body"></div>
+      <div class="va-ledger__footer">
+        <a class="va-btn va-btn--primary va-ledger__cta" href="#act-dossier" data-i18n="openDossierBtn">Mở Hồ sơ chuyến đi</a>
+      </div>
+    </div>
+  </aside>
+
+  <script src="data.js"></script>
+  <script src="store.js"></script>
+  <script src="scrollcraft.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

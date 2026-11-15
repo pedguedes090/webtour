@@ -1,0 +1,26 @@
+{
+  "name": "webtour",
+  "version": "1.0.0",
+  "description": "Vietnam Atlas - Hệ sinh thái du lịch Việt Nam 2026 (Khám phá, Đặt dịch vụ & Quản trị CMS)",
+  "main": "scrollcraft/builds/vietnam-atlas/index.html",
+  "scripts": {
+    "start": "npx serve scrollcraft/builds/vietnam-atlas -p 4512",
+    "dev": "npx serve scrollcraft/builds/vietnam-atlas -p 4512",
+    "serve": "npx serve scrollcraft/builds/vietnam-atlas -p 4512"
+  },
+  "keywords": [
+    "vietnam",
+    "travel",
+    "scrollcraft",
+    "atlas",
+    "tour",
+    "hotels",
+    "flights",
+    "esim"
+  ],
+  "author": "Duongkum999",
+  "license": "MIT",
+  "dependencies": {
+    "playwright-core": "^1.65.0"
+  }
+}

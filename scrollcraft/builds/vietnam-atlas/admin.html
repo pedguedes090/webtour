@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vietnam Atlas CMS · Quản trị Nội dung &amp; Đơn đặt chỗ</title>
+  <meta name="description" content="Hệ thống quản trị CMS đồng bộ thời gian thực cho Vietnam Atlas: điểm đến 34 đơn vị 2026, lưu trú, tour, chuyến bay, eSIM, thẻ quà tặng và đơn đặt chỗ.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='13' fill='%23FAFBF9' stroke='%23096B5C' stroke-width='2'/%3E%3Cpath d='M15.5 4.5 C19.5 7.5 11.5 11.5 14.5 15.5 C17.2 19 13.8 21.8 11.2 23.8' fill='none' stroke='%23096B5C' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Be+Vietnam+Pro:wght@400;500;600;700&subset=vietnamese,latin&display=swap">
+
+  <link rel="stylesheet" href="scrollcraft.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <a class="cms-skip" href="#cms-main" data-i18n="skipLink">Chuyển tới nội dung quản trị</a>
+
+  <!-- ======================================================================
+       TOP LINKED NAVIGATION (3-Site Ecosystem + Language/Currency + Sync)
+       ====================================================================== -->
+  <header class="cms-header" id="cms-header">
+    <div class="cms-header__inner">
+      <div class="cms-header__left">
+        <a class="cms-brand" href="index.html" aria-label="Vietnam Atlas trang chủ">
+          <svg class="cms-brand__mark" viewBox="0 0 28 28" width="26" height="26" aria-hidden="true">
+            <circle cx="14" cy="14" r="12" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.35"/>
+            <path d="M15.5 4.5 C19.5 7.5, 11.5 11.5, 14.5 15.5 C17.2 19, 13.8 21.8, 11.2 23.8" fill="none" stroke="#096B5C" stroke-width="2.1" stroke-linecap="round"/>
+            <circle cx="15.5" cy="4.5" r="1.9" fill="#102421"/>
+            <circle cx="11.2" cy="23.8" r="1.9" fill="#096B5C"/>
+          </svg>
+          <span class="cms-brand__name">
+            <strong>Vietnam Atlas</strong>
+            <span class="cms-brand__tag" data-i18n="brandTag">Editorial CMS</span>
+          </span>
+        </a>
+
+        <nav class="cms-sites" aria-label="Liên kết hệ sinh thái 3 trang">
+          <a class="cms-site-link" href="index.html" data-i18n="siteHome">Trang chủ</a>
+          <a class="cms-site-link" href="explore.html" data-i18n="sitePortal">Web Đặt dịch vụ</a>
+          <a class="cms-site-link is-active" href="admin.html" aria-current="page" data-i18n="siteAdmin">Quản trị CMS</a>
+        </nav>
+      </div>
+
+      <div class="cms-header__right">
+        <div class="cms-sync-pill" id="sync-indicator" title="BroadcastChannel + localStorage">
+          <span class="cms-sync-pill__dot" aria-hidden="true"></span>
+          <span class="cms-sync-pill__text" id="sync-status-text">Đồng bộ trực tiếp</span>
+          <span class="cms-sync-pill__time sc-nums" id="sync-status-time">--:--</span>
+        </div>
+
+        <div class="cms-segmented" role="group" aria-label="Ngôn ngữ">
+          <button type="button" class="cms-segmented__btn is-active" data-lang-btn="vi" aria-pressed="true">VI</button>
+          <button type="button" class="cms-segmented__btn" data-lang-btn="en" aria-pressed="false">EN</button>
+        </div>
+
+        <div class="cms-segmented" role="group" aria-label="Tiền tệ">
+          <button type="button" class="cms-segmented__btn is-active" data-currency-btn="VND" aria-pressed="true">VNĐ</button>
+          <button type="button" class="cms-segmented__btn" data-currency-btn="USD" aria-pressed="false">USD</button>
+        </div>
+
+        <button type="button" class="cms-btn cms-btn--ghost cms-header__action" id="btn-export-json" data-i18n="btnExport">Xuất JSON</button>
+        <button type="button" class="cms-btn cms-btn--danger-ghost cms-header__action" id="btn-reset-seed" data-i18n="btnReset">Khôi phục mẫu</button>
+
+        <button type="button" class="cms-menu-btn" id="mobile-menu-toggle" aria-expanded="false" aria-controls="mobile-drawer" aria-label="Mở menu quản trị">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Responsive Mobile Navigation & Utility Drawer -->
+    <div class="cms-mobile-drawer" id="mobile-drawer" hidden>
+      <div class="cms-mobile-drawer__section">
+        <p class="cms-mobile-drawer__label" data-i18n="mobileSitesTitle">Hệ sinh thái Vietnam Atlas</p>
+        <div class="cms-mobile-drawer__links">
+          <a class="cms-site-link" href="index.html" data-i18n="siteHome">Trang chủ (index.html)</a>
+          <a class="cms-site-link" href="explore.html" data-i18n="sitePortal">Web Đặt dịch vụ (explore.html)</a>
+          <a class="cms-site-link is-active" href="admin.html" aria-current="page" data-i18n="siteAdmin">Quản trị CMS (admin.html)</a>
+        </div>
+      </div>
+      <div class="cms-mobile-drawer__section">
+        <p class="cms-mobile-drawer__label" data-i18n="mobileToolsTitle">Công cụ dữ liệu</p>
+        <div class="cms-mobile-drawer__actions">
+          <button type="button" class="cms-btn cms-btn--ghost" id="btn-import-json-mobile" data-i18n="btnImport">Nhập JSON</button>
+          <button type="button" class="cms-btn cms-btn--ghost" id="btn-export-json-mobile" data-i18n="btnExport">Xuất JSON</button>
+          <button type="button" class="cms-btn cms-btn--danger-ghost" id="btn-reset-seed-mobile" data-i18n="btnReset">Khôi phục dữ liệu mẫu</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       MAIN WORKSPACE
+       ====================================================================== -->
+  <main class="cms-main" id="cms-main">
+    <!-- Masthead & Tab Strip -->
+    <section class="cms-masthead" aria-labelledby="cms-page-title">
+      <div class="cms-wrap">
+        <div class="cms-masthead__top">
+          <div class="cms-masthead__copy">
+            <h1 class="cms-title" id="cms-page-title" data-i18n="mastheadTitle">Biên tập Nội dung &amp; Điều phối Đặt chỗ</h1>
+            <p class="cms-subtitle" data-i18n="mastheadSub">
+              Mọi thay đổi về điểm đến, giá phòng, tour, chuyến bay, eSIM, thẻ quà tặng và trạng thái đơn hàng được lưu vào localStorage và đồng bộ tức thì tới trang chủ và cổng đặt dịch vụ.
+            </p>
+            <div class="cms-masthead__meta">
+              <span class="cms-meta-item">
+                <span data-i18n="storeKeyLabel">Kho dữ liệu:</span>
+                <code>vietnam_atlas_store_v1</code>
+              </span>
+              <span class="cms-meta-sep" aria-hidden="true">·</span>
+              <span class="cms-meta-item cms-meta-item--sync">
+                <span class="cms-meta-sync-dot" aria-hidden="true"></span>
+                <span data-i18n="syncChannelLabel">Kênh đồng bộ:</span>
+                <code>vietnam_atlas_sync</code>
+              </span>
+              <button type="button" class="cms-btn cms-btn--ghost cms-btn--sm" id="btn-import-json" data-i18n="btnImport">Nhập JSON</button>
+              <input type="file" id="cms-import-file" accept=".json,application/json" hidden>
+            </div>
+          </div>
+          <div class="cms-masthead__preview-links">
+            <a class="cms-btn cms-btn--ghost" href="index.html" target="_blank" rel="noopener">
+              <span data-i18n="previewLanding">Xem Trang chủ</span>
+              <span aria-hidden="true">&#8599;</span>
+            </a>
+            <a class="cms-btn cms-btn--primary" href="explore.html" target="_blank" rel="noopener">
+              <span data-i18n="previewPortal">Xem Web Đặt dịch vụ</span>
+              <span aria-hidden="true">&#8599;</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Primary CRUD Tab Bar -->
+        <div class="cms-tabs" role="tablist" aria-label="Các phân hệ quản trị">
+          <button type="button" role="tab" class="cms-tab is-active" id="tab-overview" aria-selected="true" aria-controls="panel-overview" data-tab="overview">
+            <span data-i18n="tabOverview">Tổng quan</span>
+          </button>
+          <button type="button" role="tab" class="cms-tab" id="tab-destinations" aria-selected="false" aria-controls="panel-destinations" data-tab="destinations">
+            <span data-i18n="tabDestinations">Điểm đến</span>
+            <span class="cms-tab__badge sc-nums" id="badge-destinations">0</span>
+          </button>
+          <button type="button" role="tab" class="cms-tab" id="tab-stays" aria-selected="false" aria-controls="panel-stays" data-tab="stays">
+            <span data-i18n="tabStays">Hotels &amp; Homes</span>
+            <span class="cms-tab__badge sc-nums" id="badge-stays">0</span>
+          </button>
+          <button type="button" role="tab" class="cms-tab" id="tab-tours" aria-selected="false" aria-controls="panel-tours" data-tab="tours">
+            <span data-i18n="tabTours">Tours &amp; Vé</span>
+            <span class="cms-tab__badge sc-nums" id="badge-tours">0</span>
+          </button>
+          <button type="button" role="tab" class="cms-tab" id="tab-catalog-ops" aria-selected="false" aria-controls="panel-catalog-ops" data-tab="catalog-ops">
+            <span data-i18n="tabCatalogOps">Flights · eSIM · Giftcards</span>
+            <span class="cms-tab__badge sc-nums" id="badge-catalog-ops">0</span>
+          </button>
+          <button type="button" role="tab" class="cms-tab" id="tab-bookings" aria-selected="false" aria-controls="panel-bookings" data-tab="bookings">
+            <span data-i18n="tabBookings">Đơn đặt chỗ &amp; Hỗ trợ</span>
+            <span class="cms-tab__badge cms-tab__badge--accent sc-nums" id="badge-bookings">0</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <div class="cms-wrap cms-panels">
+      <!-- ================================================================
+           PANEL 1: OVERVIEW
+           ================================================================ -->
+      <section class="cms-panel is-active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+        <div class="cms-kpi-grid" id="overview-kpis"></div>
+
+        <div class="cms-overview-grid">
+          <article class="cms-card">
+            <div class="cms-card__head">
+              <div>
+                <h2 class="cms-card__title" data-i18n="ovRecentTitle">Đơn đặt chỗ &amp; Yêu cầu hỗ trợ mới nhất</h2>
+                <p class="cms-card__desc" data-i18n="ovRecentDesc">Cập nhật tự động khi khách đặt từ index.html hoặc explore.html.</p>
+              </div>
+              <button type="button" class="cms-btn cms-btn--ghost cms-btn--sm" id="ov-goto-bookings" data-i18n="ovManageAll">Quản lý tất cả</button>
+            </div>
+            <div id="overview-recent-bookings"></div>
+          </article>
+
+          <div class="cms-overview-side">
+            <article class="cms-card">
+              <div class="cms-card__head">
+                <div>
+                  <h2 class="cms-card__title" data-i18n="ovPreviewTitle">Liên kết xem trước trực tiếp</h2>
+                  <p class="cms-card__desc" data-i18n="ovPreviewDesc">Mở trang khách trong tab mới để kiểm chứng đồng bộ BroadcastChannel.</p>
+                </div>
+              </div>
+              <div class="cms-preview-links">
+                <a class="cms-preview-tile" href="explore.html" target="_blank" rel="noopener">
+                  <strong data-i18n="ovLinkPortalTitle">Preview on Booking Portal (explore.html)</strong>
+                  <span data-i18n="ovLinkPortalSub">Kiểm tra bản đồ, tìm kiếm, lưu trú, chuyến bay, eSIM, thẻ quà tặng</span>
+                </a>
+                <a class="cms-preview-tile" href="index.html" target="_blank" rel="noopener">
+                  <strong data-i18n="ovLinkLandingTitle">Preview on Landing (index.html)</strong>
+                  <span data-i18n="ovLinkLandingSub">Kiểm tra trang giới thiệu hành trình Scroll-Craft và hồ sơ mẫu</span>
+                </a>
+                <div class="cms-quick-deep-links">
+                  <a class="cms-chip-link" href="explore.html?mode=stays" target="_blank" rel="noopener">explore.html?mode=stays</a>
+                  <a class="cms-chip-link" href="explore.html?mode=flights" target="_blank" rel="noopener">explore.html?mode=flights</a>
+                  <a class="cms-chip-link" href="explore.html?mode=tours" target="_blank" rel="noopener">explore.html?mode=tours</a>
+                  <a class="cms-chip-link" href="explore.html?mode=esim" target="_blank" rel="noopener">explore.html?mode=esim</a>
+                  <a class="cms-chip-link" href="explore.html?mode=giftcards" target="_blank" rel="noopener">explore.html?mode=giftcards</a>
+                </div>
+              </div>
+            </article>
+
+            <article class="cms-card cms-card--warm">
+              <div class="cms-card__head">
+                <div>
+                  <h2 class="cms-card__title" data-i18n="ovSeasonTitle">Kiểm tra mùa khô &amp; cảnh báo thời tiết 11 điểm</h2>
+                  <p class="cms-card__desc" data-i18n="ovSeasonDesc">Chọn tháng bất kỳ để đối chiếu bảng bestMonths và rainyMonths.</p>
+                </div>
+                <div class="cms-month-picker">
+                  <label class="va-sr-only" for="overview-month-select">Chọn tháng kiểm tra mùa</label>
+                  <select class="cms-select cms-select--compact" id="overview-month-select"></select>
+                </div>
+              </div>
+              <div class="cms-season-matrix" id="overview-season-matrix"></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           PANEL 2: DESTINATIONS
+           ================================================================ -->
+      <section class="cms-panel" id="panel-destinations" role="tabpanel" aria-labelledby="tab-destinations" hidden>
+        <div class="cms-toolbar">
+          <div class="cms-toolbar__filters">
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="dest-search">Tìm điểm đến</label>
+              <input type="search" class="cms-input" id="dest-search" placeholder="Tìm điểm đến, tỉnh 2026, mã sân bay...">
+            </div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="dest-region-filter">Lọc theo miền</label>
+              <select class="cms-select" id="dest-region-filter">
+                <option value="all" data-i18n="filterAllRegions">Tất cả 3 miền</option>
+                <option value="north" data-i18n="regionNorth">Miền Bắc</option>
+                <option value="central" data-i18n="regionCentral">Miền Trung</option>
+                <option value="south" data-i18n="regionSouth">Miền Nam</option>
+              </select>
+            </div>
+          </div>
+          <div class="cms-toolbar__actions">
+            <button type="button" class="cms-btn cms-btn--primary" id="btn-add-destination" data-i18n="btnAddDestination">+ Thêm điểm đến</button>
+          </div>
+        </div>
+
+        <div class="cms-dest-grid" id="destinations-list"></div>
+      </section>
+
+      <!-- ================================================================
+           PANEL 3: HOTELS & HOMES (STAYS)
+           ================================================================ -->
+      <section class="cms-panel" id="panel-stays" role="tabpanel" aria-labelledby="tab-stays" hidden>
+        <div class="cms-toolbar">
+          <div class="cms-toolbar__filters">
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="stay-search">Tìm cơ sở lưu trú</label>
+              <input type="search" class="cms-input" id="stay-search" placeholder="Tìm khách sạn, villa, du thuyền, khu vực...">
+            </div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="stay-dest-filter">Lọc điểm đến</label>
+              <select class="cms-select" id="stay-dest-filter"></select>
+            </div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="stay-cat-filter">Lọc phân loại</label>
+              <select class="cms-select" id="stay-cat-filter">
+                <option value="all" data-i18n="stayCatAll">Tất cả loại hình</option>
+                <option value="hotel">Hotel / Resort</option>
+                <option value="home">Home &amp; Villa</option>
+                <option value="cruise">Cruise</option>
+              </select>
+            </div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="stay-tier-filter">Lọc phân khúc</label>
+              <select class="cms-select" id="stay-tier-filter">
+                <option value="all" data-i18n="tierAll">Tất cả phân khúc</option>
+                <option value="budget">Budget</option>
+                <option value="mid">Mid-range</option>
+                <option value="luxury">Luxury</option>
+              </select>
+            </div>
+          </div>
+          <div class="cms-toolbar__actions">
+            <button type="button" class="cms-btn cms-btn--primary" id="btn-add-stay" data-i18n="btnAddStay">+ Thêm lưu trú</button>
+          </div>
+        </div>
+
+        <div class="cms-card cms-card--table">
+          <div class="cms-table-wrap">
+            <table class="cms-table">
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="colStayName">Cơ sở lưu trú &amp; Khu vực</th>
+                  <th scope="col" data-i18n="colDestination">Điểm đến</th>
+                  <th scope="col" data-i18n="colCategoryTier">Loại &amp; Phân khúc</th>
+                  <th scope="col" data-i18n="colPrice">Giá / đêm</th>
+                  <th scope="col" data-i18n="colAmenities">Tiện ích</th>
+                  <th scope="col" class="cms-th-actions" data-i18n="colActions">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="stays-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           PANEL 4: TOURS & TICKETS
+           ================================================================ -->
+      <section class="cms-panel" id="panel-tours" role="tabpanel" aria-labelledby="tab-tours" hidden>
+        <div class="cms-toolbar">
+          <div class="cms-toolbar__filters">
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="tour-search">Tìm tour hoặc vé tham quan</label>
+              <input type="search" class="cms-input" id="tour-search" placeholder="Tìm tên tour, vé tham quan, điểm đón...">
+            </div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="tour-dest-filter">Lọc điểm đến tour</label>
+              <select class="cms-select" id="tour-dest-filter"></select>
+            </div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="tour-weather-filter">Lọc điều kiện thời tiết</label>
+              <select class="cms-select" id="tour-weather-filter">
+                <option value="all" data-i18n="tourWeatherAll">Mọi điều kiện thời tiết</option>
+                <option value="sensitive" data-i18n="tourWeatherSensitive">Nhạy cảm thời tiết / Cảng vụ</option>
+              </select>
+            </div>
+          </div>
+          <div class="cms-toolbar__actions">
+            <button type="button" class="cms-btn cms-btn--primary" id="btn-add-tour" data-i18n="btnAddTour">+ Thêm Tour &amp; Vé</button>
+          </div>
+        </div>
+
+        <div class="cms-card cms-card--table">
+          <div class="cms-table-wrap">
+            <table class="cms-table">
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="colTourTitle">Tour / Vé tham quan</th>
+                  <th scope="col" data-i18n="colDestination">Điểm đến</th>
+                  <th scope="col" data-i18n="colDuration">Thời lượng &amp; Điểm đón</th>
+                  <th scope="col" data-i18n="colWeather">Thời tiết</th>
+                  <th scope="col" data-i18n="colTourPrice">Giá tham khảo</th>
+                  <th scope="col" class="cms-th-actions" data-i18n="colActions">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="tours-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           PANEL 5: FLIGHTS · ESIM · GIFTCARDS
+           ================================================================ -->
+      <section class="cms-panel" id="panel-catalog-ops" role="tabpanel" aria-labelledby="tab-catalog-ops" hidden>
+        <div class="cms-subtabs" role="tablist" aria-label="Nhóm dịch vụ vận chuyển và tiện ích">
+          <button type="button" role="tab" class="cms-subtab is-active" id="subtab-flights" aria-selected="true" data-subtab="flights">
+            <span data-i18n="subFlights">Chuyến bay (Flights)</span>
+            <span class="cms-tab__badge sc-nums" id="badge-flights">0</span>
+          </button>
+          <button type="button" role="tab" class="cms-subtab" id="subtab-esims" aria-selected="false" data-subtab="esims">
+            <span data-i18n="subEsims">eSIM Du lịch</span>
+            <span class="cms-tab__badge sc-nums" id="badge-esims">0</span>
+          </button>
+          <button type="button" role="tab" class="cms-subtab" id="subtab-giftcards" aria-selected="false" data-subtab="giftcards">
+            <span data-i18n="subGiftcards">Thẻ quà tặng (Giftcards)</span>
+            <span class="cms-tab__badge sc-nums" id="badge-giftcards">0</span>
+          </button>
+        </div>
+
+        <!-- Flights Subpanel -->
+        <div class="cms-subpanel is-active" id="subpanel-flights">
+          <div class="cms-toolbar">
+            <div class="cms-toolbar__filters">
+              <div class="cms-field cms-field--inline">
+                <label class="va-sr-only" for="flight-search">Tìm đường bay</label>
+                <input type="search" class="cms-input" id="flight-search" placeholder="Tìm mã sân bay (HAN, DAD, PQC...) hoặc hãng bay...">
+              </div>
+            </div>
+            <div class="cms-toolbar__actions">
+              <button type="button" class="cms-btn cms-btn--primary" id="btn-add-flight" data-i18n="btnAddFlight">+ Thêm đường bay</button>
+            </div>
+          </div>
+          <div class="cms-card cms-card--table">
+            <div class="cms-table-wrap">
+              <table class="cms-table">
+                <thead>
+                  <tr>
+                    <th scope="col" data-i18n="colRoute">Tuyến bay</th>
+                    <th scope="col" data-i18n="colFlightTime">Thời gian bay</th>
+                    <th scope="col" data-i18n="colOneWay">Một chiều (One-way)</th>
+                    <th scope="col" data-i18n="colRoundTrip">Khứ hồi (Round-Trip)</th>
+                    <th scope="col" data-i18n="colAirlines">Hãng khai thác</th>
+                    <th scope="col" class="cms-th-actions" data-i18n="colActions">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="flights-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- eSIM Subpanel -->
+        <div class="cms-subpanel" id="subpanel-esims" hidden>
+          <div class="cms-toolbar">
+            <div class="cms-toolbar__filters">
+              <div class="cms-field cms-field--inline">
+                <label class="va-sr-only" for="esim-search">Tìm gói eSIM</label>
+                <input type="search" class="cms-input" id="esim-search" placeholder="Tìm nhà mạng, mã gói (5G60T, Gigago, Airalo)...">
+              </div>
+            </div>
+            <div class="cms-toolbar__actions">
+              <button type="button" class="cms-btn cms-btn--primary" id="btn-add-esim" data-i18n="btnAddEsim">+ Thêm gói eSIM</button>
+            </div>
+          </div>
+          <div class="cms-card cms-card--table">
+            <div class="cms-table-wrap">
+              <table class="cms-table">
+                <thead>
+                  <tr>
+                    <th scope="col" data-i18n="colProvider">Nhà cung cấp &amp; Mã gói</th>
+                    <th scope="col" data-i18n="colData">Dung lượng</th>
+                    <th scope="col" data-i18n="colValidity">Hiệu lực</th>
+                    <th scope="col" data-i18n="colLocalNum">Số +84</th>
+                    <th scope="col" data-i18n="colEsimPrice">Giá bán</th>
+                    <th scope="col" class="cms-th-actions" data-i18n="colActions">Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody id="esims-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Giftcards Subpanel -->
+        <div class="cms-subpanel" id="subpanel-giftcards" hidden>
+          <div class="cms-toolbar">
+            <div class="cms-toolbar__filters">
+              <div class="cms-field cms-field--inline">
+                <label class="va-sr-only" for="giftcard-search">Tìm thẻ quà tặng</label>
+                <input type="search" class="cms-input" id="giftcard-search" placeholder="Tìm chủ đề hoặc mệnh giá thẻ quà tặng...">
+              </div>
+            </div>
+            <div class="cms-toolbar__actions">
+              <button type="button" class="cms-btn cms-btn--primary" id="btn-add-giftcard" data-i18n="btnAddGiftcard">+ Thêm mẫu Giftcard</button>
+            </div>
+          </div>
+          <div class="cms-dest-grid" id="giftcards-list"></div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           PANEL 6: BOOKINGS & SUPPORT TICKETS
+           ================================================================ -->
+      <section class="cms-panel" id="panel-bookings" role="tabpanel" aria-labelledby="tab-bookings" hidden>
+        <div class="cms-toolbar">
+          <div class="cms-toolbar__filters">
+            <div class="cms-status-pills" id="booking-status-pills" role="group" aria-label="Lọc trạng thái đơn hàng"></div>
+            <div class="cms-field cms-field--inline">
+              <label class="va-sr-only" for="booking-search">Tìm đơn đặt chỗ</label>
+              <input type="search" class="cms-input" id="booking-search" placeholder="Tìm mã đơn, tên khách, SĐT, email...">
+            </div>
+          </div>
+          <div class="cms-toolbar__actions">
+            <button type="button" class="cms-btn cms-btn--primary" id="btn-add-booking" data-i18n="btnAddBooking">+ Tạo đơn test / Hỗ trợ</button>
+          </div>
+        </div>
+
+        <div class="cms-card cms-card--table">
+          <div class="cms-table-wrap">
+            <table class="cms-table cms-table--bookings">
+              <colgroup>
+                <col style="width:11%">
+                <col style="width:17%">
+                <col style="width:15%">
+                <col style="width:17%">
+                <col style="width:11%">
+                <col style="width:16%">
+                <col style="width:13%">
+              </colgroup>
+              <thead>
+                <tr>
+                  <th scope="col" data-i18n="colBookingId">Mã đơn &amp; Nguồn</th>
+                  <th scope="col" data-i18n="colCustomer">Khách hàng</th>
+                  <th scope="col" data-i18n="colDates">Lịch trình &amp; Thời tiết</th>
+                  <th scope="col" data-i18n="colItems">Dịch vụ / Ghi chú</th>
+                  <th scope="col" data-i18n="colTotal">Tổng ước tính</th>
+                  <th scope="col" data-i18n="colStatus">Trạng thái &amp; Cập nhật nhanh</th>
+                  <th scope="col" class="cms-th-actions" data-i18n="colActions">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ======================================================================
+       COLOPHON FOOTER
+       ====================================================================== -->
+  <footer class="cms-footer">
+    <div class="cms-wrap cms-footer__inner">
+      <p class="cms-footer__note" data-i18n="footerNote">
+        Vietnam Atlas 2025-2026 · Quản trị tập trung 34 đơn vị hành chính, lưu trú, tour, đường bay, eSIM, thẻ quà tặng &amp; đơn đặt chỗ.
+      </p>
+      <nav class="cms-footer__links" aria-label="Liên kết chân trang">
+        <a href="index.html" data-i18n="siteHome">Trang chủ</a>
+        <a href="explore.html" data-i18n="sitePortal">Web Đặt dịch vụ</a>
+        <a href="admin.html" aria-current="page" data-i18n="siteAdmin">Quản trị CMS</a>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- ======================================================================
+       SLIDE-OVER EDITOR DRAWER (Dynamic CRUD Forms + Booking Details)
+       ====================================================================== -->
+  <div class="cms-drawer-backdrop" id="cms-drawer-backdrop" hidden>
+    <div class="cms-drawer" id="cms-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" tabindex="-1">
+      <div class="cms-drawer__head">
+        <div>
+          <h2 class="cms-drawer__title" id="drawer-title">Chỉnh sửa mục</h2>
+          <p class="cms-drawer__scope" id="drawer-eyebrow">CMS Editor</p>
+        </div>
+        <button type="button" class="cms-icon-btn" id="drawer-close-btn" aria-label="Đóng khung chỉnh sửa">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <div class="cms-drawer__body" id="drawer-body"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================================
+       CONFIRMATION MODAL (Reset Seed / Delete Item)
+       ====================================================================== -->
+  <div class="cms-modal-backdrop" id="cms-modal-backdrop" hidden>
+    <div class="cms-modal" id="cms-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1">
+      <h2 class="cms-modal__title" id="modal-title">Xác nhận thao tác</h2>
+      <p class="cms-modal__desc" id="modal-desc"></p>
+      <div class="cms-modal__actions">
+        <button type="button" class="cms-btn cms-btn--ghost" id="modal-cancel-btn">Hủy</button>
+        <button type="button" class="cms-btn cms-btn--danger" id="modal-confirm-btn">Xác nhận</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Stack -->
+  <div class="cms-toasts" id="cms-toasts" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="data.js"></script>
+  <script src="store.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
